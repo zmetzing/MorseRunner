@@ -1,2 +1,4 @@
 backup
 lib
+*.o
+sdl_example/example
