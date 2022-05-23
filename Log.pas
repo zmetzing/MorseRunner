@@ -34,8 +34,8 @@ type
     Pfx: string;
     Dupe: boolean;
     Err: string;
+    DxWpm: integer;
   end;
-
 
 var
   QsoList: array of TQso;
@@ -59,7 +59,12 @@ begin
 
   if Ini.RunMode = rmHst
     then MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv      Sent      Score  Chk')
-    else MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv      Sent      Pref   Chk');
+    else
+       if Ini.LogDxWpm = true then
+	  MainForm.RichEdit1.Lines.Add(' UTC      Call         Recv      Sent      Pref   Chk  WPM')
+       else
+	  MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv      Sent      Pref   Chk');
+   
   MainForm.RichEdit1.SelStart := 1;
   MainForm.RichEdit1.SelLength := Length(MainForm.RichEdit1.Lines[0]);
   //MainForm.RichEdit1.SelAttributes.Style := [fsUnderline];
@@ -247,9 +252,12 @@ begin
     for i:=Tst.Stations.Count-1 downto 0 do
       if Tst.Stations[i] is TDxStation then
         with Tst.Stations[i] as TDxStation do
-          if (Oper.State = osDone) and (MyCall = Qso.Call)
-            then begin DataToLastQso; Break; end; //deletes the dx station!
-    CheckErr;
+	   begin
+	      Qso.DxWpm := Wpm;
+	      if (Oper.State = osDone) and (MyCall = Qso.Call)
+		 then begin DataToLastQso; Break; end; //deletes the dx station!
+	   end;
+       CheckErr;
     end;
 
   LastQsoToScreen;
@@ -271,13 +279,20 @@ var
   S: string;
 begin
   with QsoList[High(QsoList)] do
-    S := FormatDateTime(' hh:nn:ss  ', t) +
-         Format('%-12s  %.3d %.4d  %.3d %.4d  %-5s  %-3s',
-         [Call, Rst, Nr, Tst.Me.Rst,
-         //Tst.Me.NR,
-         MainForm.RichEdit1.Lines.Count,
-         Pfx, Err]);
-
+     if Ini.LogDxWpm = true then
+	S := FormatDateTime(' hh:nn:ss ', t) +
+	Format('%-12s %.3d %.4d  %.3d %.4d  %-5s  %-3s  %3d',
+	       [Call, Rst, Nr, Tst.Me.Rst,
+	       MainForm.RichEdit1.Lines.Count,
+	       Pfx, Err, DxWpm])
+     else
+      	S := FormatDateTime(' hh:nn:ss  ', t) +
+	Format('%-12s  %.3d %.4d  %.3d %.4d  %-5s  %-3s',
+	       [Call, Rst, Nr, Tst.Me.Rst,
+	       //Tst.Me.NR,
+	       MainForm.RichEdit1.Lines.Count,
+	       Pfx, Err]);
+    
   MainForm.RichEdit1.Lines.Add(S);
   MainForm.RichEdit1.SelStart := Length(MainForm.RichEdit1.Text) - 5;
   MainForm.RichEdit1.SelLength := 3;

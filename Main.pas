@@ -199,6 +199,7 @@ type
     LabelScoreVer: TLabel;
     ListView1: TListView;
     Operator1: TMenuItem;
+    LogDxWpmOpt: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure AlSoundOut1BufAvailable(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -252,6 +253,7 @@ type
     procedure Activity1Click(Sender: TObject);
     procedure Duration1Click(Sender: TObject);
     procedure Operator1Click(Sender: TObject);
+    procedure LogDxWpmClick(Sender:  TObject);
     procedure StopMNUClick(Sender: TObject);
   private
     MustAdvance: boolean;
@@ -304,6 +306,8 @@ begin
 
   Panel2.DoubleBuffered := true;
   RichEdit1.Align := alClient;
+
+  LogDxWpmOpt.Checked := Ini.LogDxWpm;
 end;
 
 
@@ -795,7 +799,7 @@ begin
   Flutter1.Enabled := not BCompet;
   Lids1.Enabled := not BCompet;
 
-
+  LogDxWpmOpt.Enabled := BStop;
 
   //hst specific
   Activity1.Enabled := Value <> rmHst;
@@ -1166,6 +1170,20 @@ begin
   with TIniFile.Create(ChangeFileExt(ParamStr(0), '.ini')) do
     try WriteString(SEC_STN, 'Name', HamName);
     finally Free; end;
+end;
+
+procedure TMainForm.LogDxWpmClick(Sender: TObject);
+begin
+   if Ini.LogDxWpm = true then
+   begin
+      Ini.LogDxWpm := false
+   end
+   else
+   begin
+      Ini.LogDxWpm := true
+   end;
+	 
+   LogDxWpmOpt.Checked := Ini.LogDxWpm;
 end;
 
 procedure TMainForm.StopMNUClick(Sender: TObject);

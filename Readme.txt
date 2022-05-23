@@ -221,6 +221,10 @@ command.
 VERSION HISTORY
 
 
+1.68z
+  - Ported to FreeBSD (and Linux) using Lazarus/FPC/SDL-1.2
+  - Added option to add the DX's speed to the log (Settings)
+
 1.68
   - TU + MyCall after the QSO is now equivalent to CQ
 

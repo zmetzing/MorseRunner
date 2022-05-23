@@ -42,6 +42,7 @@ var
   Qsb: boolean = true;
   Flutter: boolean = true;
   Lids: boolean = true;
+  LogDxWpm: boolean = false;
 
   Duration: integer = 30;
   RunMode: TRunMode = rmStop;
@@ -92,6 +93,7 @@ begin
       MainForm.CheckBox2.Checked := ReadBool(SEC_BND, 'Qsb', Qsb);
       MainForm.CheckBox5.Checked := ReadBool(SEC_BND, 'Flutter', Flutter);
       MainForm.CheckBox6.Checked := ReadBool(SEC_BND, 'Lids', Lids);
+      LogDxWpm := ReadBool(SEC_BND, 'LogDxWpm', LogDxWpm);
       MainForm.ReadCheckBoxes;
 
       Duration := ReadInteger(SEC_TST, 'Duration', Duration);
@@ -136,6 +138,7 @@ begin
       WriteBool(SEC_BND, 'Qsb', Qsb);
       WriteBool(SEC_BND, 'Flutter', Flutter);
       WriteBool(SEC_BND, 'Lids', Lids);
+      WriteBool(SEC_BND, 'LogDxWpm', LogDxWpm);
 
       WriteInteger(SEC_TST, 'Duration', Duration);
       WriteInteger(SEC_TST, 'HiScore', HiScore);

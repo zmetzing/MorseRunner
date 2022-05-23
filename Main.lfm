@@ -1211,6 +1211,10 @@ object MainForm: TMainForm
         Caption = 'HST Operator...'
         OnClick = Operator1Click
       end
+      object LogDxWpmOpt: TMenuItem
+        Caption = 'Log DX WPM'
+        OnClick = LogDxWpmClick
+      end
     end
     object Help1: TMenuItem
       Caption = 'Help'

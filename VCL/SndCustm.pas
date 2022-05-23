@@ -96,7 +96,7 @@ begin
     end
   else
     begin
-      Writeln('BufferDone used ', SndObj.Buffers[0].used, ', len ', len, ', 2 * Buffers[0].len = ', 2 * SndObj.Buffers[0].len);
+       //Writeln('BufferDone used ', SndObj.Buffers[0].used, ', len ', len, ', 2 * Buffers[0].len = ', 2 * SndObj.Buffers[0].len);
       for i := 0 to len do
       begin
 	p[i] := 0; // Silence
@@ -129,9 +129,7 @@ procedure TWaitThread.ProcessEvent;
 begin
   if (Owner.Buffers[0].used = 0) then
     begin
-      //Writeln('Fill buffer');
       Owner.BufferDone(@Owner.Buffers[0]);
-      //Writeln('Did it fill? ', Owner.Buffers[0].used);
     end;
 end;
 
@@ -145,7 +143,6 @@ begin
   inherited Create(AOwner);
 
   SetBufCount(DEFAULTBUFCOUNT);
-  Writeln('Buffers ', GetBufCount());
 
   if SDL_Init(SDL_INIT_AUDIO) < 0 then
      begin
